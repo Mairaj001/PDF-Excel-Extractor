@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEAM ALPHA</title>
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+           <div class="left">
+             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="">
+           </div>
+           <div class="right-items">
+             <ul class="list-tiems">
+                 <li id="toggle-divs">DashBoard</li>
+                 <li>Last Ten Questions</li>
+                 <li>Settings</li>
+                 
+             </ul>
+             <button>Sign Up -> </button>
+           </div>
+        </header>
+
+        <main>
+          <div class="main-inner-container container">
+            <div class="bot-chat-container first-div">
+                <div class="AI-header">
+                    <h4>Ai Assistance</h4>
+                    <button>Unumte <i class="ri-mic-off-fill"></i></button>
+                </div>
+                <div class="Ai-user-chat-main">
+                    <div class="response-container">
+
+                    </div>
+                </div>
+
+                <div class="Ai-input-box">
+                    <input type="text" name="text" id="user-query" placeholder="Enter Query">
+                </div>
+                <div class="Buttons">
+                    <button>Send</button>
+                    <button>Send Pdf</button>
+                    <button>Send Excel</button>
+                </div>
+            </div>
+            <div class="navbar-toggle-container second-div">
+
+            </div>
+          </div>
+        </main>
+
+        <footer>
+
+        </footer>
+    </div>
+
+
+
+    <script>
+         const toggleLink = document.getElementById('toggle-divs');
+         const container = document.querySelector('.container');
+
+
+         toggleLink.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default anchor behavior
+
+    
+        container.classList.toggle('show-second', 'space-between');
+});      
+    </script>
+</body>
+</html>
