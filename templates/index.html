@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TEAM ALPHA</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link
     href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
     rel="stylesheet"
@@ -33,7 +34,10 @@
             <div class="bot-chat-container first-div">
                 <div class="AI-header">
                     <h4>Ai Assistance</h4>
-                    <button>Unumte <i class="ri-mic-off-fill"></i></button>
+                    <div class="mic-button" id="mic-button">
+                        <span id="mic-label">Unmute</span>
+                        <i class="fas fa-microphone-slash"></i>
+                    </div>
                 </div>
                 <div class="Ai-user-chat-main">
                     <div class="response-container">
@@ -75,5 +79,7 @@
         container.classList.toggle('show-second', 'space-between');
 });      
     </script>
+
+<script  src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

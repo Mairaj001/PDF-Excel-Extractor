@@ -272,3 +272,23 @@ ul{
     margin: 0px 10px;
     margin-bottom: 10px;
 }
+
+.mic-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background-color: white;
+    font-size: 1.1rem;
+    gap:1.4vw;
+    border-radius: 22px;
+    padding-left: 2px;
+    cursor: pointer;
+}
+
+.mic-button i{
+    background-color: rgb(201, 201, 201);
+    height: 100%;
+    padding: 7px;
+    border-radius: 50%;
+}
