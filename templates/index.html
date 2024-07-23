@@ -21,8 +21,8 @@
            <div class="right-items">
              <ul class="list-tiems">
                  <li id="toggle-divs">DashBoard</li>
-                 <li>Last Ten Questions</li>
-                 <li>Settings</li>
+                 <li id="last-ten-q">Last Ten Questions</li>
+                 <li id="Settings">Settings</li>
                  
              </ul>
              <button>Sign Up -> </button>
@@ -54,8 +54,46 @@
                     <button>Send Excel</button>
                 </div>
             </div>
-            <div class="navbar-toggle-container second-div">
 
+            <div class="navbar-toggle-container second-div" id="question_div">
+                <div class="header">
+                    <div class="mic-button">
+                        <span id="mic-label">back</span>
+                        <i class="ri-arrow-left-s-line"></i>
+                    </div>
+                    <div class="text">Last 10 questions</div>
+                </div>
+
+                <div class="questions-container">
+                    <div class="question">
+                        <div class="img"><img src="{{ url_for('static', filename='images/light-bulb.png') }}" alt=""></div>
+                        <span>What is ai</span>
+                    </div>
+                  
+                </div>
+            </div>
+
+            <div class="Settings-toogle-div second-div" id="settings_div">
+                <div class="header">
+                    <div class="mic-button">
+                        <span id="mic-label">back</span>
+                        <i class="ri-arrow-left-s-line"></i>
+                    </div>
+                    <div class="text">Settings</div>
+                </div>
+                <div class="settings-container">
+                   <div class="field">
+                    <label for="activation">Activation Word</label>
+                    <input type="text" name="activation" id="activation">
+                   </div>
+
+                   <div class="field">
+                    <label for="deactice">De-Activation Word</label>
+                    <input type="text" name="deactice" id="deactice">
+                   </div>
+
+                  <div class="btn"><button id="set-default">set to default</button></div> 
+                </div>
             </div>
           </div>
         </main>
@@ -67,18 +105,6 @@
 
 
 
-    <script>
-         const toggleLink = document.getElementById('toggle-divs');
-         const container = document.querySelector('.container');
-
-
-         toggleLink.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent default anchor behavior
-
-    
-        container.classList.toggle('show-second', 'space-between');
-});      
-    </script>
 
 <script  src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
