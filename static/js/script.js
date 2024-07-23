@@ -27,15 +27,25 @@ document.addEventListener('DOMContentLoaded', function () {
         settingsDiv.style.display = 'none';
     }
 
+    // Function to reset all list items to default color
+    function resetActiveClass() {
+        lastTenQuestionsLi.classList.remove('active');
+        settingsLi.classList.remove('active');
+    }
+
     // Event listener for 'Last Ten Questions' list item
     lastTenQuestionsLi.addEventListener('click', function () {
         hideAllDivs(); // Hide all divs first
         questionDiv.style.display = 'flex'; // Show the question div
+        resetActiveClass(); // Reset all list items to default
+        lastTenQuestionsLi.classList.add('active'); // Highlight selected item
     });
 
     // Event listener for 'Settings' list item
     settingsLi.addEventListener('click', function () {
         hideAllDivs(); // Hide all divs first
         settingsDiv.style.display = 'flex'; // Show the settings div
+        resetActiveClass(); // Reset all list items to default
+        settingsLi.classList.add('active'); // Highlight selected item
     });
 });

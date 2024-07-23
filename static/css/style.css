@@ -140,6 +140,15 @@ ul{
     animation: slide-in-right 0.5s forwards;
     transform: translateX(100%); 
 }
+.li-change{
+    color:#1A214E;
+    transition: color 1.5s ease;
+}
+
+.active {
+    color: #050928;
+    font-weight: bold;
+}
 
 /* Styles when both divs are visible */
 .container.show-second .first-div {
