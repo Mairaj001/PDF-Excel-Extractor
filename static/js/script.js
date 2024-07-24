@@ -49,3 +49,80 @@ document.addEventListener('DOMContentLoaded', function () {
         settingsLi.classList.add('active'); // Highlight selected item
     });
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const sendBtn = document.getElementById('send-btn');
+    const userInput = document.getElementById('question-input');
+    const responseContainer = document.getElementById('ai-response-content');
+
+    sendBtn.addEventListener('click', sendMessage);
+
+    userInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    function sendMessage() {
+        const query = userInput.value.trim();
+        
+        if (query) {
+            // Append user's message with icon
+            appendMessage(query, 'user-message');
+            userInput.value = ''; // Clear input field
+
+            // Send a POST request to the Flask server
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: query }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Append bot's response with typewriter effect
+                appendMessage('', 'bot-message',  data.response.replace(/^ChatGPT:\s*/, ''));
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                appendMessage('Sorry, something went wrong.', 'bot-message');
+            });
+        }
+    }
+
+    function appendMessage(message, className, fullMessage = '') {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add(className);
+
+        const iconElement = document.createElement('div');
+        iconElement.classList.add('icon');
+
+        const messageContent = document.createElement('div');
+        messageContent.classList.add('message-content');
+        messageElement.appendChild(iconElement);
+        messageElement.appendChild(messageContent);
+
+        if (className === 'user-message') {
+            iconElement.innerHTML = '<i class="fas fa-user"></i>'; // User icon
+            messageContent.textContent = message;
+        } else {
+            iconElement.innerHTML = '<i class="fas fa-robot"></i>'; // Bot icon
+            typeWriter(messageContent, fullMessage);
+        }
+
+        responseContainer.appendChild(messageElement);
+        responseContainer.scrollTop = responseContainer.scrollHeight; // Scroll to bottom
+    }
+
+    function typeWriter(element, text, i = 0, speed = 10) {
+        if (i < text.length) {
+            element.textContent += text.charAt(i);
+            i++;
+            setTimeout(() => typeWriter(element, text, i, speed), speed);
+            responseContainer.scrollTop = responseContainer.scrollHeight; // Scroll to bottom
+        }
+    }
+});

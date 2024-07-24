@@ -15,3 +15,19 @@ def ChatWithGpt(prompt):
     )
     result = print(f"ChatGPT:{ response.choices[0].message.content}")
     return f"ChatGPT:{ response.choices[0].message.content}"
+
+def main():
+    print("Welcome to the ChatGPT CLI!")
+    print("Type 'exit' to end the conversation.\n")
+
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() == 'exit':
+            print("Goodbye!")
+            break
+
+        response = ChatWithGpt(user_input)
+
+
+if __name__ == "__main__":
+    main()
