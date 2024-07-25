@@ -20,17 +20,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const settingsLi = document.getElementById('Settings');
     const questionDiv = document.getElementById('question_div');
     const settingsDiv = document.getElementById('settings_div');
-
+    const dash=document.getElementById('toggle-divs');
     // Function to hide all content divs
+    const back_btn=document.getElementById('back-btn');
+    const back_btn1=document.getElementById('back-btn1');
     function hideAllDivs() {
         questionDiv.style.display = 'none';
         settingsDiv.style.display = 'none';
     }
+    dash.classList.add('active')
 
     // Function to reset all list items to default color
     function resetActiveClass() {
         lastTenQuestionsLi.classList.remove('active');
         settingsLi.classList.remove('active');
+        dash.classList.remove('active')
     }
 
     // Event listener for 'Last Ten Questions' list item
@@ -48,6 +52,22 @@ document.addEventListener('DOMContentLoaded', function () {
         resetActiveClass(); // Reset all list items to default
         settingsLi.classList.add('active'); // Highlight selected item
     });
+
+    dash.addEventListener('click',()=>{
+        hideAllDivs();
+        resetActiveClass()
+        dash.classList.add('active')
+    })
+    back_btn.addEventListener('click',()=>{
+        hideAllDivs();
+        resetActiveClass();
+        dash.classList.add('active')
+    })
+    back_btn1.addEventListener('click',()=>{
+        hideAllDivs();
+        resetActiveClass();
+        dash.classList.add('active')
+    })
 });
 
 
@@ -56,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const sendBtn = document.getElementById('send-btn');
     const userInput = document.getElementById('question-input');
     const responseContainer = document.getElementById('ai-response-content');
-
+    
     sendBtn.addEventListener('click', sendMessage);
 
     userInput.addEventListener('keydown', function(e) {

@@ -68,8 +68,12 @@
 
             socket.on('assistant_message', function(data) {
                 console.log('Assistant:', data.message);
-                // Update UI with assistant's message
-            });
+               
+            });s
+
+            socket.on('user_message', (data)=>{
+                console.log('user:', data.message);
+            })
         });
     </script>
 </body>

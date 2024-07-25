@@ -26,10 +26,11 @@ def VoiceActivation():
 
         try:
             text = recognizer.recognize_google(audio)
+            socketio.emit('user_message', {'message':text})
             if activation_phrase in text.lower():
                 user_messages.append("Activation phrase detected. Starting session...")
                 socketio.emit('assistant_message', {'message': "Ok, now tell me about your query."})
-
+                
                 while not stop_flag.is_set():
                     with microphone as source:
                         recognizer.adjust_for_ambient_noise(source)
@@ -38,7 +39,7 @@ def VoiceActivation():
                     try:
                         speech_text = recognizer.recognize_google(audio)
                         user_messages.append(speech_text)
-                        
+                        socketio.emit("user_message",{'message':speech_text})
                         openai.api_key = "sk-proj-8hEDD0MBrecoxmRA5cyWT3BlbkFJhn1v2mVy59OkNOC6n9EU"
                         response = openai.chat.completions.create(
                             model="gpt-3.5-turbo",
@@ -54,7 +55,7 @@ def VoiceActivation():
                         if goodbye_phrase in speech_text.lower():
                             user_messages.append("Goodbye!")
                             socketio.emit('assistant_message', {'message': "Goodbye!"})
-                            stop_flag.set()  # Stop listening on "goodbye"
+                            stop_flag.set()  
                             break
 
                     except sr.UnknownValueError:

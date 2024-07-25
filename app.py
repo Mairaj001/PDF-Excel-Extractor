@@ -7,15 +7,15 @@ from chat import ChatWithGpt
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
 
-# Initialize Flask-SocketIO with the app
+
 socketio.init_app(app)
 
-# Initialize CORS with Flask
+
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/')
 def index():
-    return render_template('index2.html')
+    return render_template('index.html')
 
 @app.route('/chat', methods=['POST'])
 def chat():
