@@ -27,8 +27,9 @@ header{
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 90px;
+    height: 120px;
     width: 100%;
+    background-color: #0c3459 ;
     /* position: fixed; */
     /* z-index: 3; */
     /* background-color: rgb(101, 75, 75); */
@@ -67,6 +68,8 @@ footer{
 .left img{
     height: 90%;
     width: 90%;
+    filter: brightness(1000%) contrast(1000%);
+    mix-blend-mode: lighten;
 }
 
 .right-items{
@@ -80,6 +83,7 @@ footer{
 .right-items ul li{
     list-style: none;
     cursor: pointer;
+    color:white;
 
 
 }
@@ -105,10 +109,11 @@ ul{
     align-items: center;
    height: 100%;
    width: 100%;
-   background: linear-gradient(135deg, #1A214E, #996794, #1A214E);
+   /* background: linear-gradient(135deg, #1A214E, #996794, #1A214E); */
    border: none;
-   border-radius: 22px;
+   /* border-radius: 22px; */
    padding: 0px 10px;
+   background-color: #0c3459 ;
 }
 
 .bot-chat-container{
@@ -116,7 +121,7 @@ ul{
     justify-content: flex-start;
     flex-direction: column;
     align-items: center;
-    background-color: #1A214E;
+    background-color: transparent;
     width: 90%;
     border-radius: 22px;
 
@@ -252,7 +257,7 @@ ul{
     max-height: 100%;
     background-color: white;
     border: none;
-    border-radius: 22px;
+    border-radius: 7px;
     display: none;
     display: flex;
     flex-direction: column;
@@ -339,7 +344,7 @@ ul{
     margin-top: 20px;
     height: 36px;
     border: none;
-    border-radius: 22px;
+    border-radius: 7px;
     text-align: center;
     font-size: 1.3rem;
 }

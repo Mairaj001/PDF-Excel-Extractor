@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TEAM ALPHA</title>
+    <script type="module" src="{{ url_for('static', filename='js/Db.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/Dbhandler.js') }}"></script>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link
@@ -17,7 +19,7 @@
     <div class="wrapper">
         <header>
            <div class="left">
-             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="">
+             <img src="{{ url_for('static', filename='images/img.png') }}" alt="">
            </div>
            <div class="right-items">
              <ul class="list-tiems">
@@ -26,7 +28,7 @@
                  <li id="Settings">Settings</li>
                  
              </ul>
-             <button>Sign Up -> </button>
+             
            </div>
         </header>
 
@@ -52,8 +54,10 @@
                 </div>
                 <div class="Buttons">
                     <button id="send-btn">Send</button>
-                    <button>Send Pdf</button>
-                    <button>Send Excel</button>
+                    <button id="send-pdf">Send Pdf</button>
+                    <button id="send-excel">Send Excel</button>
+                    <input type="file" id="pdf_file" name="pdf_file" accept=".pdf" required style="display: none;">
+                    <input type="file" id="excel_file" name="excel_file" accept=".xlsx" required style="display: none;">
                 </div>
             </div>
 
@@ -66,11 +70,11 @@
                     <div class="text">Last 10 questions</div>
                 </div>
 
-                <div class="questions-container">
-                    <div class="question">
+                <div class="questions-container" id="questions-container">
+                    <!-- <div class="question">
                         <div class="img"><img src="{{ url_for('static', filename='images/light-bulb.png') }}" alt=""></div>
                         <span>What is ai</span>
-                    </div>
+                    </div> -->
                   
                 </div>
             </div>
@@ -100,11 +104,8 @@
           </div>
         </main>
 
-        <footer>
-
-        </footer>
+   
     </div>
-
 
     
     <script  src="{{ url_for('static', filename='js/voiceHandling.js') }}"></script>
