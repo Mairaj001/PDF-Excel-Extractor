@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, send_file,render_template, jsonify, request
 from flask_cors import CORS
 from Socketio_instance import socketio  # Import socketio instance
 from voiceChat import start_voice_activation, stop_voice_activation
@@ -7,6 +7,8 @@ from pdf import process_pdf_query
 from NoErrorExcelExtraction import process_excel
 import os
 import logging
+from text_to_speech import text_to_speech
+import io
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
 
@@ -88,5 +90,31 @@ def process_file():
     response = process_excel(excel_file,query)
 
     return jsonify({'response': response})
+
+
+@app.route('/generate_speech', methods=['POST'])
+def generate_speech():
+    try:
+        # Extract text from the request
+        data = request.json
+        text = data.get('text', '')
+        
+        if not text:
+            return jsonify({"error": "No text provided"}), 400
+
+        # Generate speech from text
+        response = text_to_speech(text)
+
+        # Create a BytesIO stream from the binary content
+        audio_stream = io.BytesIO(response.content)
+
+        # Return the audio file as a response
+        return send_file(audio_stream, mimetype="audio/mpeg", as_attachment=False, download_name="output.mp3")
+
+    except Exception as e:
+        print(f"Error generating or playing speech: {e}")  # Log the exception details
+        return jsonify({"error": str(e)}), 500
+    
+    
 if __name__ == '__main__':
     socketio.run(app, debug=True)

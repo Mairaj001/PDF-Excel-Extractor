@@ -116,6 +116,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
 });
+
+
+
+
 function appendMessage(message, className, fullMessage = '') {
     const messageElement = document.createElement('div');
     messageElement.classList.add(className);
@@ -146,15 +150,16 @@ function appendMessage(message, className, fullMessage = '') {
     } else {
         // Bot message configuration
         iconElement.innerHTML = '<i class="fas fa-robot"></i>'; // Bot icon
-        typeWriter(textContainer, fullMessage); // Use typewriter for bot messages
+
+        const formattedMessage = formatResponse(fullMessage); // Format the message
+        typeWriter(textContainer, formattedMessage, 0, 10, true); // Use typewriter with HTML
 
         // Append speaker icon to the messageContent
         messageContent.appendChild(speakerIcon);
 
         // Add click event for text-to-speech
         speakerIcon.addEventListener('click', () => {
-            const utterance = new SpeechSynthesisUtterance(fullMessage);
-            speechSynthesis.speak(utterance);
+           fetchAndPlaySpeech(fullMessage)
         });
     }
 
@@ -163,14 +168,110 @@ function appendMessage(message, className, fullMessage = '') {
     responseContainer.scrollTop = responseContainer.scrollHeight; // Scroll to bottom
 }
 
-function typeWriter(element, text, i = 0, speed = 10) {
+// Typewriter effect function for appending text or HTML content to an element
+function typeWriter(element, text, i = 0, speed = 10, isHTML = false) {
     if (i < text.length) {
-        element.textContent += text.charAt(i); // Append each character
+        if (isHTML) {
+            // Append HTML character by character for HTML content
+            element.innerHTML = text.substring(0, i + 1);
+        } else {
+            // Append plain text character by character
+            element.textContent += text.charAt(i);
+        }
         i++;
-        setTimeout(() => typeWriter(element, text, i, speed), speed);
+        setTimeout(() => typeWriter(element, text, i, speed, isHTML), speed);
         responseContainer.scrollTop = responseContainer.scrollHeight; // Scroll to bottom
     }
 }
+
+function fetchAndPlaySpeech(text) {
+    fetch('/generate_speech', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ text: text })
+    })
+    .then(response => response.blob())  // Handle the response as a blob
+    .then(blob => {
+        const audioUrl = URL.createObjectURL(blob);
+        const audio = new Audio(audioUrl);
+        audio.play();
+    })
+    .catch(error => {
+        console.error('Error fetching or playing the speech:', error);
+    });
+}
+
+
+// Function to format the response text fetched from the server header
+function formatResponse(text) {
+    // Split the text into lines for easier processing
+    const lines = text.split('\n');
+
+    // Process each line
+    const formattedLines = lines.map(line => {
+        // Handle bold text markers (e.g., wrapping text with asterisks `*`)
+        let formattedLine = handleBold(line);
+
+        // Format headers and subheadings
+        if (line.startsWith('### ')) {
+            // Main heading (Level 3)
+            formattedLine = `<h3>${formattedLine.slice(4).trim()}</h3>`;
+        } else if (line.startsWith('#### ')) {
+            // Subheading (Level 4)
+            formattedLine = `<h4>${formattedLine.slice(5).trim()}</h4>`;
+        } else if (line.startsWith('##### ')) {
+            // Sub-subheading (Level 5)
+            formattedLine = `<h5>${formattedLine.slice(6).trim()}</h5>`;
+        } else if (line.startsWith('- ')) {
+            // List item
+            formattedLine = `<li>${formattedLine.slice(2).trim()}</li>`;
+        } else if (line.startsWith('1. ')) {
+            // Ordered list item
+            formattedLine = `<li>${formattedLine.slice(3).trim()}</li>`;
+        } else {
+            // Convert inline math to HTML entities
+            formattedLine = formattedLine.replace(/\[(.*?)\]/g, '&#91;$1&#93;');
+        }
+
+        return formattedLine;
+    });
+
+    // Join the formatted lines into a single formatted response
+    const formattedResponse = formattedLines.join('\n');
+
+    // If there are list items, wrap them in <ul> or <ol> tags
+    return wrapListItems(formattedResponse);
+}
+
+// Convert markers for bold text in the response string into HTML <strong> tags
+function handleBold(text) {
+    return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+}
+
+// Wrap list items with <ul> or <ol> tags based on the content
+function wrapListItems(text) {
+    const unorderedListRegex = /(?:^|\n)- (.*?)(?=\n|$)/g;
+    const orderedListRegex = /(?:^|\n)\d+\. (.*?)(?=\n|$)/g;
+
+    // Replace unordered list items with <ul> and <li> tags
+    if (unorderedListRegex.test(text)) {
+        text = text.replace(unorderedListRegex, '<li>$1</li>');
+        text = `<ul>${text}</ul>`;
+    }
+
+    // Replace ordered list items with <ol> and <li> tags
+    if (orderedListRegex.test(text)) {
+        text = text.replace(orderedListRegex, '<li>$1</li>');
+        text = `<ol>${text}</ol>`;
+    }
+
+    return text;
+}
+
+
+
 
 
         const pdfFileInput = document.getElementById('pdf_file');

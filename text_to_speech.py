@@ -5,6 +5,7 @@ def text_to_speech(text):
     model="tts-1",
     voice="alloy",
     input=text,
+    response_format="mp3"
  )
 
- response.stream_to_file("output.mp3")
+ return response
