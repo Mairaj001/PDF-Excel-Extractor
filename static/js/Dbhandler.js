@@ -1,4 +1,4 @@
-import { add_to_items, get_items} from "./db.js";
+import { getActivationDeactivation,add_to_items, get_items, updateActivationDeactivation} from "./db.js";
 
 
 
@@ -49,4 +49,48 @@ import { add_to_items, get_items} from "./db.js";
     const questions = await get_items(); // Fetch items from Firebase
     console.log(questions)
     displayQuestions(questions); // Display questions on page load
+    setActivationFunctionsToLocalStorage();
   });
+
+  document.getElementById('set-default').addEventListener("click", async ()=>{
+    const actviate=document.getElementById('activation')
+    const deactive=document.getElementById("deactice");
+    
+    if(!actviate.value.trim() && !deactive.value.trim()){
+      return
+    }
+    
+    
+    await updateActivationDeactivation(actviate.value.trim(),deactive.value.trim())
+    
+
+     await setActivationFunctionsToLocalStorage();
+      actviate.value=""
+     deactive.value=""
+  })
+
+ 
+  async function setActivationFunctionsToLocalStorage() {
+    try {
+        const { activation, deactivation } = await getActivationDeactivation();
+        console.log(activation,deactivation)
+        // Store activation and deactivation values in local storage
+        if (activation !== null) {
+            localStorage.setItem('activation', activation);
+        } else {
+            localStorage.setItem('activation', 'null');
+        }
+
+        if (deactivation !== null) {
+            localStorage.setItem('deactivation', deactivation);
+        } else {
+            localStorage.setItem('deactivation', 'null');
+        }
+        
+        console.log('Activation and Deactivation values have been stored in local storage.');
+    } catch (error) {
+        console.error('Error setting activation and deactivation functions to local storage:', error);
+    }
+}
+
+// Example of how to call the function

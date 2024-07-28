@@ -31,7 +31,9 @@ def chat():
 
 @app.route('/start-voice-activation', methods=['POST'])
 def start_voice_activation_route():
-    result = start_voice_activation()
+    activation_data = request.json.get('activation')
+    deactivation_data = request.json.get('deactivation')
+    result = start_voice_activation(activation_data,deactivation_data)
     if 'error' in result:
         return jsonify(result), 400
     return jsonify(result)

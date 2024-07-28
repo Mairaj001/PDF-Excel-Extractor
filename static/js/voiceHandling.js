@@ -26,8 +26,21 @@ document.addEventListener("DOMContentLoaded", function() {
                 })
                 .catch(error => console.error('Error:', error));
         } else {
+            const activation = localStorage.getItem('activation') || null;
+            const deactivation = localStorage.getItem('deactivation') || null;
+
+            if(activation==null && deactivation==null){
+                alert("plaease set the actvation and deactivation word");
+                return
+            }
             
-            fetch('/start-voice-activation', { method: 'POST' })
+            fetch('/start-voice-activation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ activation, deactivation })
+            })
                 .then(response => response.json())
                 .then(data => {
                     console.log(data.message);

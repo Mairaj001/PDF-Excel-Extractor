@@ -9,15 +9,17 @@ stop_flag = threading.Event()
 user_messages = []
 bot_messages = []
 
-def VoiceActivation():
+def VoiceActivation(activate,deactivate):
     global user_messages, bot_messages
-    activation_phrase = "start listening"
-    goodbye_phrase = "good bye"
+    activation_phrase = activate
+    goodbye_phrase = deactivate
     recognizer = sr.Recognizer()
     microphone = sr.Microphone()
 
     user_messages = []
     bot_messages = []
+
+    print(activation_phrase,goodbye_phrase)
 
     while not stop_flag.is_set():
         with microphone as source:
