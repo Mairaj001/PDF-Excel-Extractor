@@ -91,7 +91,40 @@ def generate_response(query: str, docs: list) -> str:
         logging.error(f"An error occurred while generating response using ChatGPT: {e}")
         return None
 
-# Main program
+def process_excel(file,querys):
+   excel_file_path = file
+   excel_text = extract_text_from_excel(excel_file_path)
+
+   if excel_text:
+        # Split text into chunks
+        text_chunks = split_text_into_chunks(excel_text)
+
+        if text_chunks:
+            # Create a FAISS index from text chunks
+            embedding = OpenAIEmbeddings()
+            faiss_index = create_faiss_index(text_chunks, embedding)
+
+            if faiss_index:
+                # Search for similar documents
+                query = querys
+                docs = search_similar_documents(query, faiss_index)
+
+                if docs:
+                    # Answer questions using the QA chain
+                    answers = answer_questions(query, docs, OpenAI())
+
+                    # Generate a response using ChatGPT
+                    response = generate_response(query, docs)
+                    return response
+                    print(f"ChatGPT: {response}")
+                else:
+                    print("No similar documents found.")
+            else:
+                print("Failed to create FAISS index.")
+        else:
+            print("Failed to split text into chunks.")
+   else:
+        print("Failed to extract text from Excel file.")
 if __name__ == '__main__':
     # Extract text from Excel file
     excel_file_path = r'Assest\1.xlsx'

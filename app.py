@@ -3,15 +3,16 @@ from flask_cors import CORS
 from Socketio_instance import socketio  # Import socketio instance
 from voiceChat import start_voice_activation, stop_voice_activation
 from chat import ChatWithGpt
-from pdfExtract import process_pdf_file
-
-from excel import process_excel_and_query
-
+from pdf import process_pdf_query
+from NoErrorExcelExtraction import process_excel
+import os
+import logging
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
 
 
 socketio.init_app(app)
+logging.basicConfig(level=logging.DEBUG)
 
 
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -51,9 +52,41 @@ def handle_connect():
 def handle_disconnect():
     print('Client disconnected')
 
+@app.route('/process', methods=['POST'])
+def process_request():
+    try:
+        if 'pdf_file' not in request.files:
+            return jsonify({"error": "PDF file is required"}), 400
+        if 'query' not in request.form:
+            return jsonify({"error": "Query is required"}), 400
 
+        pdf_file = request.files['pdf_file']
+        query = request.form['query']
+
+        if not pdf_file:
+            return jsonify({"error": "No file uploaded"}), 400
+
+        # Process the PDF and query
+        response = process_pdf_query(pdf_file, query)
+
+        return jsonify({"response": response})
     
+    except Exception as e:
+        logging.error(f"Error processing request: {e}")
+        return jsonify({"error": "An error occurred while processing your request."}), 500
 
+@app.route('/process_excel', methods=['POST'])
+def process_file():
+    if 'file' not in request.files or 'query' not in request.form:
+        return jsonify({'error': 'File or query missing.'}), 400
 
+    # Retrieve the file and query from the request
+    excel_file = request.files['file']
+    query = request.form['query']
+
+    # Process the query and file using the excel_processor module
+    response = process_excel(excel_file,query)
+
+    return jsonify({'response': response})
 if __name__ == '__main__':
     socketio.run(app, debug=True)
