@@ -79,13 +79,13 @@ def VoiceActivation(activate,deactivate):
             stop_flag.set()
             break
 
-def start_voice_activation():
+def start_voice_activation(actviate,deactivate):
     global voice_activation_thread, stop_flag
     if voice_activation_thread and voice_activation_thread.is_alive():
         return {'error': 'Voice activation is already running.'}
     
     stop_flag.clear()
-    voice_activation_thread = threading.Thread(target=VoiceActivation)
+    voice_activation_thread = threading.Thread(target=VoiceActivation(activate=actviate,deactivate=deactivate))
     voice_activation_thread.start()
     return {'message': 'Voice activation started.'}
 

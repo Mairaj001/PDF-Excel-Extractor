@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <div id="snackbar">Some text some message..</div>
     <div class="wrapper">
         <header>
            <div class="left">
@@ -33,6 +34,7 @@
         </header>
 
         <main>
+            
           <div class="main-inner-container container">
             <div class="bot-chat-container first-div">
                 <div class="AI-header">
@@ -64,8 +66,8 @@
             <div class="navbar-toggle-container second-div" id="question_div">
                 <div class="header">
                     <div class="mic-button">
-                        <span id="back-btn">back</span>
-                        <i class="ri-arrow-left-s-line"></i>
+                        <!-- <span id="back-btn">back</span> -->
+                        <i class="ri-arrow-left-s-line" id="back-btn"></i>
                     </div>
                     <div class="text">Last 10 questions</div>
                 </div>
@@ -82,8 +84,8 @@
             <div class="Settings-toogle-div second-div" id="settings_div">
                 <div class="header">
                     <div class="mic-button">
-                        <span id="back-btn1">back</span>
-                        <i class="ri-arrow-left-s-line"></i>
+                        <!-- <span id="back-btn1">back</span> -->
+                        <i class="ri-arrow-left-s-line" id="back-btn1"></i>
                     </div>
                     <div class="text">Settings</div>
                 </div>
@@ -108,7 +110,7 @@
     </div>
 
     
-    <script  src="{{ url_for('static', filename='js/voiceHandling.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/voiceHandling.js') }}"></script>
 <script  src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

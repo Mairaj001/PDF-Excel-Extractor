@@ -2,7 +2,7 @@ import { getActivationDeactivation,add_to_items, get_items, updateActivationDeac
 
 
 
-  function displayQuestions(questions) {
+  export  function displayQuestions(questions) {
     const container = document.getElementById('questions-container');
     container.innerHTML = ''; // Clear existing content
   
