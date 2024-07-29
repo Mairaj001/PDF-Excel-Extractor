@@ -77,7 +77,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const sendBtn = document.getElementById('send-btn');
     const userInput = document.getElementById('question-input');
     const responseContainer = document.getElementById('ai-response-content');
-    
+    const pdfButton = document.getElementById('send-pdf');
+    const excelBtn=document.getElementById('send-excel')
     sendBtn.addEventListener('click', sendMessage);
 
     userInput.addEventListener('keydown', function(e) {
@@ -93,6 +94,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Append user's message with icon
             appendMessage(query, 'user-message');
             userInput.value = ''; // Clear input field
+
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+            excelBtn.disabled=true;
+            pdfButton.disabled=true;
 
             // Send a POST request to the Flask server
             fetch('/chat', {
@@ -110,6 +116,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('Error:', error);
                 appendMessage('Sorry, something went wrong.', 'bot-message');
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                excelBtn.disabled=true;
+            pdfButton.disabled=true;
             });
         }
     }
@@ -121,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function appendMessage(message, className, fullMessage = '') {
+    
     const messageElement = document.createElement('div');
     messageElement.classList.add(className);
 
@@ -136,8 +147,12 @@ function appendMessage(message, className, fullMessage = '') {
 
     const speakerIcon = document.createElement('div');
     speakerIcon.classList.add('speaker-icon');
+   
     speakerIcon.innerHTML = '<i class="fas fa-volume-up"></i>'; // Speaker icon
-
+    
+    const spinner = document.createElement('div');
+    spinner.classList.add('spinner'); // Spinner element
+    spinner.id="spinner"
     // Append elements based on the message type
     messageElement.appendChild(iconElement);
     messageElement.appendChild(messageContent);
@@ -152,13 +167,21 @@ function appendMessage(message, className, fullMessage = '') {
         iconElement.innerHTML = '<i class="fas fa-robot"></i>'; // Bot icon
 
         const formattedMessage = formatResponse(fullMessage); // Format the message
-        typeWriter(textContainer, formattedMessage, 0, 10, true); // Use typewriter with HTML
+        typeWriter(textContainer, formattedMessage, 0, 10, true, () => {
+            // Re-enable input and button once typewriter effect is done
+            document.getElementById('question-input').disabled = false;
+            document.getElementById('send-btn').disabled = false;
+            document.getElementById('send-pdf').disabled=false;
+            document.getElementById('send-excel').disabled=false;
+        }); // Use typewriter with HTML
 
         // Append speaker icon to the messageContent
         messageContent.appendChild(speakerIcon);
+        messageContent.appendChild(spinner);
 
         // Add click event for text-to-speech
         speakerIcon.addEventListener('click', () => {
+            spinner.style.display = 'inline-block';
            fetchAndPlaySpeech(fullMessage)
         });
     }
@@ -169,7 +192,7 @@ function appendMessage(message, className, fullMessage = '') {
 }
 
 // Typewriter effect function for appending text or HTML content to an element
-function typeWriter(element, text, i = 0, speed = 10, isHTML = false) {
+function typeWriter(element, text, i = 0, speed = 10, isHTML = false, callback = null) {
     if (i < text.length) {
         if (isHTML) {
             // Append HTML character by character for HTML content
@@ -179,12 +202,17 @@ function typeWriter(element, text, i = 0, speed = 10, isHTML = false) {
             element.textContent += text.charAt(i);
         }
         i++;
-        setTimeout(() => typeWriter(element, text, i, speed, isHTML), speed);
+        setTimeout(() => typeWriter(element, text, i, speed, isHTML, callback), speed);
         responseContainer.scrollTop = responseContainer.scrollHeight; // Scroll to bottom
+    } else {
+        // Call the callback function if provided once the typing animation is complete
+        if (typeof callback === 'function') {
+            callback();
+        }
     }
 }
-
-function fetchAndPlaySpeech(text) {
+function fetchAndPlaySpeech(text, spinner) {
+    
     fetch('/generate_speech', {
         method: 'POST',
         headers: {
@@ -196,10 +224,24 @@ function fetchAndPlaySpeech(text) {
     .then(blob => {
         const audioUrl = URL.createObjectURL(blob);
         const audio = new Audio(audioUrl);
+        
+        // Hide the spinner when the audio starts playing
+        audio.onplaying = () => {
+            document.getElementById('spinner').style.display = 'none';
+        };
+
+        // Hide the spinner if there's an error
+        audio.onerror = () => {
+            document.getElementById('spinner').style.display = 'none';
+            console.error('Error playing audio.');
+        };
+
         audio.play();
     })
     .catch(error => {
         console.error('Error fetching or playing the speech:', error);
+        // Hide the spinner if there's an error
+        spinner.style.display = 'none';
     });
 }
 
@@ -321,6 +363,10 @@ function wrapListItems(text) {
             
             appendMessage(query, 'user-message');
             console.log("pdf click")
+            queryInput.disabled = true;
+            sendButton.disabled = true;
+            excelBtn.disabled=true;
+            pdfButton.disabled=true;
             // Create FormData object
             const formData = new FormData();
             formData.append('pdf_file', selectedFile);
@@ -349,9 +395,17 @@ function wrapListItems(text) {
                 } else {
                     const errorData = await response.json();
                     console.log(errorData.error);
+                    queryInput.disabled = false;
+                    sendButton.disabled = false;
+                     excelBtn.disabled=false;
+                     pdfButton.disabled=false;
                 }
             } catch (error) {
                 console.log(error.message);
+                queryInput.disabled = false;
+                sendButton.disabled = false;
+                 excelBtn.disabled=false;
+                 pdfButton.disabled=false;
             }
         });
     
@@ -392,6 +446,10 @@ function wrapListItems(text) {
             
             appendMessage(query, 'user-message');
             console.log("excel click")
+            queryInput.disabled = true;
+            sendButton.disabled = true;
+             excelBtn.disabled=true;
+             pdfButton.disabled=true;
             // Create FormData object
             const formData = new FormData();
             formData.append('file', excelFile);
@@ -420,9 +478,17 @@ function wrapListItems(text) {
                 } else {
                     const errorData = await response.json();
                     console.log(errorData.error);
+                    queryInput.disabled = false;
+                    sendButton.disabled = false;
+                     excelBtn.disabled=false;
+                     pdfButton.disabled=false;
                 }
             } catch (error) {
                 console.log(error.message);
+                queryInput.disabled = false;
+                sendButton.disabled = false;
+                 excelBtn.disabled=false;
+                 pdfButton.disabled=false;
             }
         });
         
