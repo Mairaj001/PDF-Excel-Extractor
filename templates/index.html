@@ -19,17 +19,19 @@
     <div id="snackbar">Some text some message..</div>
     <div class="wrapper">
         <header>
+            <div class="heading">
            <div class="left">
              <img src="{{ url_for('static', filename='images/img.png') }}" alt="">
            </div>
            <div class="right-items">
              <ul class="list-tiems">
                  <li id="toggle-divs">DashBoard</li>
-                 <li id="last-ten-q">Last Ten Questions</li>
+                 <li id="last-ten-q">Last Ten Tasks</li>
                  <li id="Settings">Settings</li>
                  
              </ul>
              
+           </div>
            </div>
         </header>
 
@@ -38,7 +40,7 @@
           <div class="main-inner-container container">
             <div class="bot-chat-container first-div">
                 <div class="AI-header">
-                    <h4>Ai Assistance</h4>
+                    <h4>COREY AI Intelligence</h4>
                     <div class="mic-button" id="mic-button">
                         <span id="mic-label" style="padding-left: 7px;">Unmute</span>
                         <i class="fas fa-microphone-slash" id="mic"></i>
@@ -69,7 +71,7 @@
                         <!-- <span id="back-btn">back</span> -->
                         <i class="ri-arrow-left-s-line" id="back-btn"></i>
                     </div>
-                    <div class="text">Last 10 questions</div>
+                    <div class="text">Last 10 Tasks</div>
                 </div>
 
                 <div class="questions-container" id="questions-container">

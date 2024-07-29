@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+    font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
 
 }
 
@@ -44,10 +45,16 @@ html,body{
     height: 100%;
     width: 100%;
 }
-
+.heading{
+    display: flex;
+    justify-content: space-between;
+    width: 85%;
+    height: 110%;
+    margin-top: 15px;
+}
 header{
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     height: 120px;
     width: 100%;
@@ -82,7 +89,7 @@ footer{
    display: flex;
    justify-content: center;
    align-items: center;
-   height: 100%;
+   height: 90%;
    /* background-color: red; */
    
    
@@ -262,9 +269,24 @@ ul{
 .Ai-user-chat-main{
     display: flex;
     width: 100%;
-    height: 650px;
+    height: 550px;
     /* background-color: red; */
     padding: 7px 40px;
+}
+
+.speaker-icon,
+.cross-icon {
+    display: inline-block; /* Inline block for proper spacing */
+    margin: 0 5px; /* Equal spacing on left and right */
+    cursor: pointer; /* Pointer cursor for clickable elements */
+    font-size: 18px; /* Icon size */
+    color: #666; /* Default icon color */
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.speaker-icon:hover,
+.cross-icon:hover {
+    color: #000; /* Change color on hover */
 }
 
 .Ai-input-box{
@@ -318,15 +340,22 @@ ul{
 }
 
 .user-message .message-content {
-    background-color: #d1ecf1;
-    color: #0c5460;
+    background-color: white;
+    color: black;
     border: 1px solid #bee5eb;
 }
 
 .bot-message .message-content {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+    background-color: #eaeaea; /* Bot message background color */
+    color: #000000; /* Text color for bot message */
+    
+    border: 1px solid #eaeaea;
+}
+
+.bot-image{
+    height: 30px ;
+    width:30px;
+    border-radius: 12px;
 }
 
 /* Icon styles */
@@ -391,7 +420,8 @@ ul{
     font-size: 1.1rem;
     color:black;
     border: none;
-    background-color: #B3AAFF;
+    background-color: white;
+    
     border-radius: 22px;
     margin: 0px 10px;
     margin-bottom: 10px;
@@ -417,7 +447,7 @@ ul{
     border-radius: 50%;
 }
 .text-container{
-    text-indent: 10px;
+    /* text-indent: 10px; */
     padding: 0px 7px;
     text-align: justify;
 }

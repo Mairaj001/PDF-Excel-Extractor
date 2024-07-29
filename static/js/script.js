@@ -134,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
 function appendMessage(message, className, fullMessage = '') {
     
     const messageElement = document.createElement('div');
@@ -157,7 +156,12 @@ function appendMessage(message, className, fullMessage = '') {
     
     const spinner = document.createElement('div');
     spinner.classList.add('spinner'); // Spinner element
-    spinner.id="spinner"
+    spinner.id = "spinner"; // Note: Consider using unique IDs if there are multiple spinners
+
+    const crossIcon = document.createElement('div');
+    crossIcon.classList.add('cross-icon');
+    crossIcon.innerHTML = '<i class="fas fa-times"></i>'; // Cross icon
+
     // Append elements based on the message type
     messageElement.appendChild(iconElement);
     messageElement.appendChild(messageContent);
@@ -169,25 +173,47 @@ function appendMessage(message, className, fullMessage = '') {
         textContainer.textContent = message; // Add text directly to textContainer
     } else {
         // Bot message configuration
-        iconElement.innerHTML = '<i class="fas fa-robot"></i>'; // Bot icon
+        const botImage = document.createElement('img');
+        botImage.classList.add("bot-image")
+        botImage.src = 'static/images/logo.png'; // Replace with the path to your bot image
+        botImage.alt = 'Bot Icon';
+        iconElement.appendChild(botImage);
 
         const formattedMessage = formatResponse(fullMessage); // Format the message
         typeWriter(textContainer, formattedMessage, 0, 10, true, () => {
             // Re-enable input and button once typewriter effect is done
             document.getElementById('question-input').disabled = false;
             document.getElementById('send-btn').disabled = false;
-            document.getElementById('send-pdf').disabled=false;
-            document.getElementById('send-excel').disabled=false;
+            document.getElementById('send-pdf').disabled = false;
+            document.getElementById('send-excel').disabled = false;
         }); // Use typewriter with HTML
 
-        // Append speaker icon to the messageContent
+        // Append speaker and cross icons to the messageContent
         messageContent.appendChild(speakerIcon);
         messageContent.appendChild(spinner);
+        messageContent.appendChild(crossIcon);
+        
+        let audio = null; 
 
         // Add click event for text-to-speech
         speakerIcon.addEventListener('click', () => {
             spinner.style.display = 'inline-block';
-           fetchAndPlaySpeech(fullMessage)
+            fetchAndPlaySpeech(fullMessage, spinner).then(fetchedAudio => {
+                audio = fetchedAudio;
+                if (audio) {
+                    audio.play();
+                }
+            });
+        });
+        
+        // Add click event to stop the audio
+        crossIcon.addEventListener("click", () => {
+            if (audio) {
+                console.log("Stopping audio playback.");
+                audio.pause(); // Pause the audio if it's playing
+                audio.currentTime = 0; // Reset the audio time to start
+                spinner.style.display = 'none'; // Hide the spinner
+            }
         });
     }
 
@@ -195,7 +221,6 @@ function appendMessage(message, className, fullMessage = '') {
     responseContainer.appendChild(messageElement);
     responseContainer.scrollTop = responseContainer.scrollHeight; // Scroll to bottom
 }
-
 // Typewriter effect function for appending text or HTML content to an element
 function typeWriter(element, text, i = 0, speed = 10, isHTML = false, callback = null) {
     if (i < text.length) {
@@ -217,8 +242,7 @@ function typeWriter(element, text, i = 0, speed = 10, isHTML = false, callback =
     }
 }
 function fetchAndPlaySpeech(text, spinner) {
-    
-    fetch('/generate_speech', {
+    return fetch('/generate_speech', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -232,21 +256,23 @@ function fetchAndPlaySpeech(text, spinner) {
         
         // Hide the spinner when the audio starts playing
         audio.onplaying = () => {
-            document.getElementById('spinner').style.display = 'none';
+            spinner.style.display = 'none';
         };
 
         // Hide the spinner if there's an error
         audio.onerror = () => {
-            document.getElementById('spinner').style.display = 'none';
+            spinner.style.display = 'none';
             console.error('Error playing audio.');
         };
 
-        audio.play();
+        // Return the audio object for control
+        return audio;
     })
     .catch(error => {
         console.error('Error fetching or playing the speech:', error);
         // Hide the spinner if there's an error
         spinner.style.display = 'none';
+        return null; // Return null in case of error to handle it in the caller
     });
 }
 

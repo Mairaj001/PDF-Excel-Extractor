@@ -182,7 +182,11 @@ function appendMessage(message, className, fullMessage = '') {
         textContainer.textContent = message; // Add text directly to textContainer
     } else {
         // Bot message configuration
-        iconElement.innerHTML = '<i class="fas fa-robot"></i>'; // Bot icon
+        const botImage = document.createElement('img');
+        botImage.classList.add("bot-image")
+        botImage.src = 'static/images/logo.png'; // Replace with the path to your bot image
+        botImage.alt = 'Bot Icon';
+        iconElement.appendChild(botImage);
         const formattedMessage = formatResponse(fullMessage);
         typeWriter(textContainer, formattedMessage, 0, 10, true, () => {
             // Re-enable input and button once typewriter effect is done
