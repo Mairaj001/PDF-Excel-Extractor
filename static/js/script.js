@@ -16,6 +16,11 @@ document.getElementById('mic-button').addEventListener('click', function() {
 let selectedFile = null;
 let excelFile=null;
 document.addEventListener('DOMContentLoaded', function () {
+
+    document.getElementById('activation').placeholder = localStorage.getItem('activation');
+
+    // Set the placeholder for the input element with the ID 'deactivation'
+    document.getElementById('deactice').placeholder = localStorage.getItem('deactivation');
     // Get references to the list items and content divs
     const lastTenQuestionsLi = document.getElementById('last-ten-q');
     const settingsLi = document.getElementById('Settings');

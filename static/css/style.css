@@ -143,9 +143,10 @@ ul{
     justify-content: flex-start;
     flex-direction: column;
     align-items: center;
-    background-color: transparent;
+    /* background-color: red; */
     width: 90%;
     border-radius: 22px;
+  
 
 }
 
@@ -196,6 +197,7 @@ ul{
     background-color: #0c3459;
     margin-left: 40px;
     margin-right: 15px;
+    height: 70%;
 }
 .space-between{
     justify-content: space-around;
@@ -260,7 +262,7 @@ ul{
 .Ai-user-chat-main{
     display: flex;
     width: 100%;
-    height: 450px;
+    height: 650px;
     /* background-color: red; */
     padding: 7px 40px;
 }
