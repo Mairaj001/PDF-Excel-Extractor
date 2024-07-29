@@ -35,8 +35,9 @@ import { getActivationDeactivation,add_to_items, get_items, updateActivationDeac
   document.getElementById('send-btn').addEventListener('click', async () => {
     const input = document.getElementById('question-input');
     const questionText = input.value.trim();
-    console.log("send")
+    
     if (questionText) {
+      console.log("send items function ")
       await add_to_items(questionText); // Add item to Firebase
       input.value = ''; // Clear the input field
       const questions = await get_items(); // Fetch updated items
@@ -57,6 +58,7 @@ import { getActivationDeactivation,add_to_items, get_items, updateActivationDeac
     const deactive=document.getElementById("deactice");
     
     if(!actviate.value.trim() && !deactive.value.trim()){
+      showToast("Please Fill the Activation & Deactivation Function")
       return
     }
     
@@ -65,8 +67,15 @@ import { getActivationDeactivation,add_to_items, get_items, updateActivationDeac
     
 
      await setActivationFunctionsToLocalStorage();
+
+     showToast("Activation & Deactivation Function are Created")
       actviate.value=""
-     deactive.value=""
+      deactive.value=""
+    
+    
+     // Retrieve the activation value from localStorage
+
+
   })
 
  

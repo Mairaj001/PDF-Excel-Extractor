@@ -1,3 +1,7 @@
+
+
+
+
 document.getElementById('mic-button').addEventListener('click', function() {
     const micButton = document.getElementById('mic-button');
     const icon = micButton.querySelector('i');
@@ -15,12 +19,10 @@ document.getElementById('mic-button').addEventListener('click', function() {
 
 let selectedFile = null;
 let excelFile=null;
+
 document.addEventListener('DOMContentLoaded', function () {
 
-    document.getElementById('activation').placeholder = localStorage.getItem('activation');
-
-    // Set the placeholder for the input element with the ID 'deactivation'
-    document.getElementById('deactice').placeholder = localStorage.getItem('deactivation');
+   
     // Get references to the list items and content divs
     const lastTenQuestionsLi = document.getElementById('last-ten-q');
     const settingsLi = document.getElementById('Settings');
@@ -86,11 +88,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const excelBtn=document.getElementById('send-excel')
     sendBtn.addEventListener('click', sendMessage);
 
-    userInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    });
+    // userInput.addEventListener('keydown', function(e) {
+    //     if (e.key === 'Enter') {
+    //         sendMessage();
+    //     }
+    // });
 
     function sendMessage() {
         const query = userInput.value.trim();

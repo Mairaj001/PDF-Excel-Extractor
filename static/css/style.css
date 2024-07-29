@@ -12,7 +12,8 @@
 html,body{
     height: auto;
     width: 100%;
-    background-color: #0c3459
+    background-color: #0c3459;
+   
 }
 
 .speaker-icon {
@@ -48,17 +49,17 @@ html,body{
 .heading{
     display: flex;
     justify-content: space-between;
-    width: 85%;
-    height: 110%;
-    margin-top: 15px;
+    width: 98%;
+    height: 100%;
+    /* margin-top: 15px; */
 }
 header{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 120px;
+    height: 100px;
     width: 100%;
-    background-color: #0c3459 ;
+    background-color: white ;
     /* position: fixed; */
     /* z-index: 3; */
     /* background-color: rgb(101, 75, 75); */
@@ -66,14 +67,15 @@ header{
 
 main{
     width: 100%;
-    /* height: calc(100% - 40px); */
-    height: 800px;
+    height: calc(100% - 40px);
+    /* height: 600px; */
+    /* padding: 10px 10px; */
     display: flex;
     justify-content: center;
     /* background-color: red; */
     /* margin-top: 91px; */
    /* padding: 1px; */
-    
+    padding: 40px 0px;
 }
 footer{
     display: flex;
@@ -95,10 +97,10 @@ footer{
    
 }
 .left img{
-    height: 90%;
-    width: 90%;
-    filter: brightness(1000%) contrast(1000%);
-    mix-blend-mode: lighten;
+    height: 55px;
+    width: 250px;
+    /* filter: brightness(1000%) contrast(1000%);
+    mix-blend-mode: lighten; */
 }
 
 .right-items{
@@ -112,14 +114,15 @@ footer{
 .right-items ul li{
     list-style: none;
     cursor: pointer;
-    color:white;
+    color:#1B214E;
+    
 
 
 }
 ul{
     display: flex;
     gap:2vw;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
 }
 
 .right-items button{
@@ -135,7 +138,7 @@ ul{
 .main-inner-container{
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
    height: 100%;
    width: 100%;
    /* background: linear-gradient(135deg, #1A214E, #996794, #1A214E); */
@@ -143,6 +146,7 @@ ul{
    /* border-radius: 22px; */
    padding: 0px 10px;
    background-color: #0c3459 ;
+   /* background-color: red; */
 }
 
 .bot-chat-container{
@@ -162,7 +166,7 @@ ul{
 }
 
 .navbar-toggle-container,.Settings-toogle-div{
-    width: 40%;
+    width: 30%;
     transition: width 0.3s ease;
     
     justify-content: flex-start;
@@ -171,7 +175,7 @@ ul{
     box-sizing: border-box;
     display: none;
     background-color: #1A214E;
-    border-radius: 22px;
+    border-radius: 12px;
     animation: slide-in-right 0.5s forwards;
     transform: translateX(100%); 
 }
@@ -340,8 +344,8 @@ ul{
 }
 
 .user-message .message-content {
-    background-color: white;
-    color: black;
+    background-color: #2C325C ;
+    color: white;
     border: 1px solid #bee5eb;
 }
 
@@ -425,6 +429,12 @@ ul{
     border-radius: 22px;
     margin: 0px 10px;
     margin-bottom: 10px;
+    transition: hover 1.5s ease-in;
+}
+
+.Buttons button:hover{
+    background-color: #1B214E;
+    color: white;
 }
 
 .mic-button{
@@ -488,7 +498,7 @@ ul{
 .questions-container, .settings-container{
     width: 100%;
     border: none;
-    border-radius:22px;
+    border-radius:7px;
     background-color: white;
     height: 100%;
     overflow: auto;
@@ -508,21 +518,22 @@ ul{
 }
 
 .question .img img{
-    height: 90%;
-    width: 90%;
+    height: 70%;
+    width: 70%;
     
     border-radius: 50%;
 }
 .question span{
     flex: 1;
-    background-color: rgb(202, 202, 202);
+    background-color: #eaeaea;
     font-size: 1.3rem;
-    border-radius: 22px;
+    border-radius: 10px;
     border: none;
     padding: 3px;
     text-indent: 15px;
     padding: 5px 7px;
     text-align: justify;
+    font-size: 1.2rem;
 }
 .settings-container{
     justify-content: center !important;
@@ -554,6 +565,7 @@ ul{
     font-size: 1.2rem;
     padding-left: 10px;
     width: 70%;
+    text-align: center;
     
 }
 
@@ -568,10 +580,15 @@ ul{
 .btn button{
     padding: 7px 12px;
     font-size: 1.1rem;
-    color:black;
+    color:white;
     border: none;
-    background-color: #B3AAFF;
+    background-color:  #1B214E;
     border-radius: 22px;
+    
+}
+
+.btn button:hover{
+    background-color: #0c3459;
 }
 
 

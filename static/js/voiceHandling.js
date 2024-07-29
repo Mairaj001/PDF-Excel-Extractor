@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Check for activation word
         if (normalizedActivationWord === normalizedMessage) {
-            showToast("Activation word activated");
+            showToast("Activation word is enabled");
             // Set flag in local storage indicating that the chat is now activated
             localStorage.setItem('chat_activated', 'true');
             return;
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Check for deactivation word
         if (normalizedDeactivationWord === normalizedMessage) {
-            showToast("Deactivation word activated. Chat deactivated.");
+            showToast("Deactivation Word is enabled");
             // Set flag in local storage indicating that the chat is now deactivated
             localStorage.setItem('chat_activated', 'false');
             stopVoiceActivation(); // Ensure we call the stop function to handle UI and backend
