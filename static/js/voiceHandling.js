@@ -2,6 +2,8 @@ import { add_to_items , get_items} from "./db.js";
 import { displayQuestions } from "./Dbhandler.js";
 const responseContainer = document.getElementById('ai-response-content');
 
+
+
 document.addEventListener("DOMContentLoaded", function() {
     const socket = io.connect('http://localhost:5000');
     
@@ -149,7 +151,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-
+window.onload = function() {
+    if (performance.navigation.type === 1) {
+      // Page was reloaded
+      console.log('Page reloaded!');
+      // Execute your action here
+    }
+  };
 function appendMessage(message, className, fullMessage = '') {
     const messageElement = document.createElement('div');
     messageElement.classList.add(className);

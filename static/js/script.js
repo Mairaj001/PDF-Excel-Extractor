@@ -19,6 +19,9 @@ document.getElementById('mic-button').addEventListener('click', function() {
 
 let selectedFile = null;
 let excelFile=null;
+let excelMode=false
+let pdfMode=false
+
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -79,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+
 const responseContainer = document.getElementById('ai-response-content');
 document.addEventListener('DOMContentLoaded', function() {
     const sendBtn = document.getElementById('send-btn');
@@ -98,6 +102,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const query = userInput.value.trim();
         
         if (query && selectedFile == null  && excelFile==null) {
+
+            if(query==="exit"){
+                resetModes()
+            
+                showToast("All Modes are reset")
+                return
+            }
             // Append user's message with icon
             appendMessage(query, 'user-message');
             userInput.value = ''; // Clear input field
@@ -133,6 +144,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
 });
+
+
 
 
 
@@ -345,7 +358,7 @@ function wrapListItems(text) {
     return text;
 }
 
-
+ 
 
 
 
@@ -355,6 +368,16 @@ function wrapListItems(text) {
         const pdfButton = document.getElementById('send-pdf');
         const excelInputFile=document.getElementById('excel_file')
        const excelBtn=document.getElementById('send-excel')
+
+       function resetModes(){
+        excelMode=false;
+        pdfMode=false;
+        selectedFile=null;
+        pdfFileInput.files = null // direct get the elemnt input
+        excelFile=null
+        excelInputFile.files=null;
+    
+        }
         // const responseDiv = document.getElementById('response');
 
         // Open file dialog when the button is clicked
@@ -377,6 +400,14 @@ function wrapListItems(text) {
         sendButton.addEventListener('click', async () => {
             
             const query = queryInput.value.trim();
+
+            if(query==="exit"){
+                resetModes()
+            
+                showToast("All Modes are reset")
+                return
+            }
+            //
             
             console.log("selectedFile",selectedFile)
             if (selectedFile==null && !query) {
@@ -418,8 +449,8 @@ function wrapListItems(text) {
                 if (response.ok) {
                     const data = await response.json();
                     console.log(data.response)
-                    selectedFile=null;
-                    pdfFileInput.files = null
+                    // selectedFile=null;
+                    // pdfFileInput.files = null
                     
                     appendMessage('', 'bot-message',  data.response.replace(/^ChatGPT:\s*/, ''));
                     
@@ -455,10 +486,19 @@ function wrapListItems(text) {
             }
             
         });
+         
 
         sendButton.addEventListener('click', async () => {
             
             const query = queryInput.value.trim();
+
+            if(query==="exit"){
+                resetModes()
+            
+                showToast("All Modes are reset")
+                return
+            }
+            //
             
             console.log("excelFile",excelFile)
             if (excelFile==null && !query) {
@@ -501,9 +541,9 @@ function wrapListItems(text) {
                 if (response.ok) {
                     const data = await response.json();
                     console.log(data.response)
-                    excelFile=null;
-                    pdfFileInput.files = null
-                    excelInputFile.files=null;
+                    // excelFile=null;
+                    // pdfFileInput.files = null
+                    // excelInputFile.files=null;
                     appendMessage('', 'bot-message',  data.response.replace(/^ChatGPT:\s*/, ''));
                     
                     
@@ -524,7 +564,7 @@ function wrapListItems(text) {
                  pdfButton.disabled=false;
             }
         });
-        
+     
         function showToast(message){
             let snackbar = document.getElementById("snackbar");
           
