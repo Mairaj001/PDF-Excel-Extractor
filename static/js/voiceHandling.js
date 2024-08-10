@@ -39,6 +39,11 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
+        document.getElementById('mic-label').textContent = "Mute";
+        document.getElementById('mic').classList.remove('fa-microphone-slash');
+        document.getElementById('mic').classList.add('fa-microphone');
+        localStorage.setItem('chat_activated', 'true'); // Assume chat is activated when the mic is active
+
         fetch('/start-voice-activation', {
             method: 'POST',
             headers: {
@@ -50,10 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(data => {
                 console.log(data.message);
                 // Update UI for mic button
-                document.getElementById('mic-label').textContent = "Mute";
-                document.getElementById('mic').classList.remove('fa-microphone-slash');
-                document.getElementById('mic').classList.add('fa-microphone');
-                localStorage.setItem('chat_activated', 'true'); // Assume chat is activated when the mic is active
+               
             })
             .catch(error => console.error('Error:', error));
     }
