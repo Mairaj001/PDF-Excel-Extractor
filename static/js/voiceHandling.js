@@ -9,8 +9,9 @@ document.addEventListener("DOMContentLoaded", function() {
     
     let isListening = false;
     window.onload = () => {
-        localStorage.setItem('chat_activated', 'false');
+        
          isListening = false;
+         disableChatActivation();
     };
 
     // Function to disable chat activation
@@ -18,11 +19,13 @@ document.addEventListener("DOMContentLoaded", function() {
         localStorage.setItem('chat_activated', 'false'); // Ensure chat_activated is set to false
     
     }
+   
 
     // Function to handle the mic button click
     document.getElementById('mic-button').addEventListener('click', function() {
         if (isListening) {
             stopVoiceActivation();
+            disableChatActivation();
         } else {
             startVoiceActivation();
         }
@@ -42,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('mic-label').textContent = "Mute";
         document.getElementById('mic').classList.remove('fa-microphone-slash');
         document.getElementById('mic').classList.add('fa-microphone');
-        localStorage.setItem('chat_activated', 'true'); // Assume chat is activated when the mic is active
+        
 
         fetch('/start-voice-activation', {
             method: 'POST',
@@ -77,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Function to handle the incoming assistant message
-    socket.on('assistant_message', function(data) {
+    socket.on('assistant_message', async function(data) {
         console.log('Assistant:', data.message);
         // Check if chat is activated before showing the assistant message
         const chatActivated = localStorage.getItem('chat_activated') === 'true';
@@ -92,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Function to handle the incoming user message
     socket.on('user_message', async (data) => {
         console.log('User:', data.message);
-
+        
         // Retrieve activation and deactivation words from local storage
         const activationWord = localStorage.getItem('activation');
         const deactivationWord = localStorage.getItem('deactivation');

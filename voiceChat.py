@@ -2,6 +2,7 @@ import speech_recognition as sr
 import openai
 import threading
 from Socketio_instance import socketio
+from whisperModel import WhisperModel
 
 # Global variables for managing the thread and messages
 voice_activation_thread = None
@@ -29,22 +30,24 @@ def VoiceActivation(activate,deactivate):
         try:
             text = recognizer.recognize_google(audio)
             socketio.emit('user_message', {'message':text})
-            if activation_phrase in text.lower():
+            print(text, "user")
+            if activation_phrase.lower() in text.lower():
                 user_messages.append("Activation phrase detected. Starting session...")
                 socketio.emit('assistant_message', {'message': "Ok, now tell me about your query."})
-                
+              
                 while not stop_flag.is_set():
                     with microphone as source:
                         recognizer.adjust_for_ambient_noise(source)
                         audio = recognizer.listen(source)
 
                     try:
-                        speech_text = recognizer.recognize_google(audio)
+                        # speech_text = recognizer.recognize_google(audio)
+                        speech_text=WhisperModel(audio)
                         user_messages.append(speech_text)
                         socketio.emit("user_message",{'message':speech_text})
                         openai.api_key = "sk-proj-8hEDD0MBrecoxmRA5cyWT3BlbkFJhn1v2mVy59OkNOC6n9EU"
                         response = openai.chat.completions.create(
-                            model="gpt-3.5-turbo",
+                            model="gpt-4o",
                             messages=[
                                 {"role": "system", "content": "You are an assistant, explain to me about the question in detail."},
                                 {"role": "user", "content": speech_text}
@@ -54,7 +57,7 @@ def VoiceActivation(activate,deactivate):
                         bot_messages.append(bot_message)
                         socketio.emit('assistant_message', {'message': bot_message})
                         
-                        if goodbye_phrase in speech_text.lower():
+                        if goodbye_phrase.lower() in speech_text.lower():
                             user_messages.append("Goodbye!")
                             socketio.emit('assistant_message', {'message': "Goodbye!"})
                             stop_flag.set()  
@@ -85,7 +88,7 @@ def start_voice_activation(actviate,deactivate):
     if voice_activation_thread and voice_activation_thread.is_alive():
         return {'error': 'Voice activation is already running.'}
     
-    print("Thread started");
+    print("Thread started")
     stop_flag.clear()
     voice_activation_thread = threading.Thread(target=VoiceActivation(activate=actviate,deactivate=deactivate))
     voice_activation_thread.start()
