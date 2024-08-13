@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function sendMessage() {
         const query = userInput.value.trim();
-        
+        // document.getElementById('spinner').style.display="flex";
         if (query && selectedFile == null  && excelFile==null) {
 
             if(query==="exit"){
@@ -147,8 +147,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
 function appendMessage(message, className, fullMessage = '') {
     
     const messageElement = document.createElement('div');
@@ -166,12 +164,15 @@ function appendMessage(message, className, fullMessage = '') {
 
     const speakerIcon = document.createElement('div');
     speakerIcon.classList.add('speaker-icon');
-   
     speakerIcon.innerHTML = '<i class="fas fa-volume-up"></i>'; // Speaker icon
     
-    const spinner = document.createElement('div');
+    const spinner = document.createElement('div'); // Bot Spinner
     spinner.classList.add('spinner'); // Spinner element
     spinner.id = "spinner"; // Note: Consider using unique IDs if there are multiple spinners
+    
+    const userSpinner = document.createElement('div'); // User Spinner
+    userSpinner.classList.add('spinner', 'user-spinner');
+    userSpinner.id = "user-spinner";
 
     const crossIcon = document.createElement('div');
     crossIcon.classList.add('cross-icon');
@@ -186,22 +187,36 @@ function appendMessage(message, className, fullMessage = '') {
         // User message configuration
         iconElement.innerHTML = '<i class="fas fa-user"></i>'; // User icon
         textContainer.textContent = message; // Add text directly to textContainer
+
+        // Display the user spinner if the message does not contain .pdf or .xlsx
+        if (!message.includes('.pdf') && !message.includes('.xlsx')) {
+            messageElement.appendChild(userSpinner);
+            userSpinner.style.display = "flex";
+        }
+        
     } else {
         // Bot message configuration
         const botImage = document.createElement('img');
-        botImage.classList.add("bot-image")
+        botImage.classList.add("bot-image");
         botImage.src = 'static/images/logo.png'; // Replace with the path to your bot image
         botImage.alt = 'Bot Icon';
         iconElement.appendChild(botImage);
 
         const formattedMessage = formatResponse(fullMessage); // Format the message
+        
+        const spinners=document.querySelectorAll(".user-spinner")
+        console.log(spinners);
+        spinners.forEach((elm)=>elm.style.display="none");
+        
+        
+
         typeWriter(textContainer, formattedMessage, 0, 10, true, () => {
-            // Re-enable input and button once typewriter effect is done
+            // Re-enable input and buttons once the typewriter effect is done
             document.getElementById('question-input').disabled = false;
             document.getElementById('send-btn').disabled = false;
             document.getElementById('send-pdf').disabled = false;
             document.getElementById('send-excel').disabled = false;
-        }); // Use typewriter with HTML
+        });
 
         // Append speaker and cross icons to the messageContent
         messageContent.appendChild(speakerIcon);
@@ -236,6 +251,9 @@ function appendMessage(message, className, fullMessage = '') {
     responseContainer.appendChild(messageElement);
     responseContainer.scrollTop = responseContainer.scrollHeight; // Scroll to bottom
 }
+
+
+
 // Typewriter effect function for appending text or HTML content to an element
 function typeWriter(element, text, i = 0, speed = 10, isHTML = false, callback = null) {
     if (i < text.length) {
@@ -256,7 +274,7 @@ function typeWriter(element, text, i = 0, speed = 10, isHTML = false, callback =
         }
     }
 }
-function fetchAndPlaySpeech(text, spinner) {
+async function fetchAndPlaySpeech(text, spinner) {
     return fetch('/generate_speech', {
         method: 'POST',
         headers: {

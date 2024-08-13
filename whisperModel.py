@@ -1,6 +1,6 @@
 from openai import OpenAI
 import os
-client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+client = OpenAI(api_key="sk-proj-8hEDD0MBrecoxmRA5cyWT3BlbkFJhn1v2mVy59OkNOC6n9EU")
 
 
 def WhisperModel(audio_file):
