@@ -4,13 +4,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/fireba
 import { getDatabase, ref, set, push , get} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBhhUD3AQTaqOn2GX6ttNlKLEwXzscoiGw",
-  authDomain: "corey-database.firebaseapp.com",
-  projectId: "corey-database",
-  storageBucket: "corey-database.appspot.com",
-  messagingSenderId: "748481790160",
-  appId: "1:748481790160:web:e35cea3988f202c06e5ed5",
-  measurementId: "G-65520HC134"
+
 };
 
 
