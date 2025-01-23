@@ -14,23 +14,17 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 # Load environment variables
 load_dotenv()
 
-# Set OpenAI API key
-os.environ["OPENAI_API_KEY"] = 'sk-proj-8hEDD0MBrecoxmRA5cyWT3BlbkFJhn1v2mVy59OkNOC6n9EU'
 
-# Define a function to extract text from an Excel file
 def extract_text_from_excel(file_path: str) -> str:
     try:
-        # Load Excel data into a Pandas dataframe
+      
         df = pd.read_excel(file_path)
-        
-        # Convert the dataframe to a string
         excel_text = df.to_string()
         return excel_text
     except Exception as e:
         logging.error(f"An error occurred while extracting text from Excel: {e}")
         return None
 
-# Define a function to split text into chunks
 def split_text_into_chunks(text: str, chunk_size: int = 800, chunk_overlap: int = 200) -> list:
     try:
         text_splitter = CharacterTextSplitter(
@@ -44,7 +38,7 @@ def split_text_into_chunks(text: str, chunk_size: int = 800, chunk_overlap: int 
         logging.error(f"An error occurred while splitting text into chunks: {e}")
         return None
 
-# Define a function to create a FAISS index from text chunks
+
 def create_faiss_index(text_chunks: list, embedding: OpenAIEmbeddings) -> FAISS:
     try:
         return FAISS.from_texts(text_chunks, embedding)
@@ -52,7 +46,7 @@ def create_faiss_index(text_chunks: list, embedding: OpenAIEmbeddings) -> FAISS:
         logging.error(f"An error occurred while creating FAISS index: {e}")
         return None
 
-# Define a function to search for similar documents
+
 def search_similar_documents(query: str, faiss_index: FAISS) -> list:
     try:
         return faiss_index.similarity_search(query)
@@ -60,7 +54,7 @@ def search_similar_documents(query: str, faiss_index: FAISS) -> list:
         logging.error(f"An error occurred while searching similar documents: {e}")
         return None
 
-# Define a function to answer questions using the QA chain
+
 def answer_questions(query: str, docs: list, openai: OpenAI) -> str:
     try:
         # Join the docs into a single string
@@ -105,15 +99,15 @@ def process_excel(file,querys):
             faiss_index = create_faiss_index(text_chunks, embedding)
 
             if faiss_index:
-                # Search for similar documents
+               
                 query = querys
                 docs = search_similar_documents(query, faiss_index)
 
                 if docs:
-                    # Answer questions using the QA chain
+                    
                     answers = answer_questions(query, docs, OpenAI())
 
-                    # Generate a response using ChatGPT
+                    
                     response = generate_response(query, docs)
                     return response
                     print(f"ChatGPT: {response}")
@@ -126,12 +120,12 @@ def process_excel(file,querys):
    else:
         print("Failed to extract text from Excel file.")
 if __name__ == '__main__':
-    # Extract text from Excel file
+    
     excel_file_path = r'Assest\1.xlsx'
     excel_text = extract_text_from_excel(excel_file_path)
 
     if excel_text:
-        # Split text into chunks
+        
         text_chunks = split_text_into_chunks(excel_text)
 
         if text_chunks:
@@ -140,15 +134,15 @@ if __name__ == '__main__':
             faiss_index = create_faiss_index(text_chunks, embedding)
 
             if faiss_index:
-                # Search for similar documents
+                
                 query = "What was Microsoft's share price 40 days ago and how has it changed in percentage terms compared to today?"
                 docs = search_similar_documents(query, faiss_index)
 
                 if docs:
-                    # Answer questions using the QA chain
+                    
                     answers = answer_questions(query, docs, OpenAI())
 
-                    # Generate a response using ChatGPT
+                    
                     response = generate_response(query, docs)
                     print(f"ChatGPT: {response}")
                 else:

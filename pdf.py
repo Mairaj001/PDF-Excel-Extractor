@@ -7,8 +7,7 @@ from langchain_community.vectorstores import FAISS
 from langchain.chains.question_answering import load_qa_chain
 import openai
 
-# Set OpenAI API key
-openai.api_key = "sk-proj-8hEDD0MBrecoxmRA5cyWT3BlbkFJhn1v2mVy59OkNOC6n9EU"
+
 
 def extract_text_from_pdf(pdf_file):
     """Extract text from a PDF file."""
@@ -76,28 +75,25 @@ def generate_chatgpt_response(docs, query):
 def process_pdf_query(pdf_file, query):
     """Process the PDF and query to provide an answer."""
     try:
-        # Extract text from PDF
+      
         raw_text = extract_text_from_pdf(pdf_file)
         if not raw_text:
             logging.error("No text extracted from PDF.")
             return "No text extracted from PDF."
 
-        # Split text into chunks
         text_chunks = split_text_into_chunks(raw_text)
 
-        # Create FAISS index from text chunks
+
         doc_search = create_faiss_index(text_chunks)
 
-        # Search for similar documents
         docs = search_similar_documents(doc_search, query)
         if not docs:
             logging.error("No documents found for the query.")
             return "No relevant documents found for the query."
 
-        # Answer questions using the QA chain
         answers = answer_questions_with_qa_chain(docs, query)
 
-        # Generate a response using ChatGPT
+   
         chatgpt_response = generate_chatgpt_response(docs, query)
         return f"ChatGPT: {chatgpt_response}"
 

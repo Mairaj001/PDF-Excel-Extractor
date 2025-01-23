@@ -41,11 +41,11 @@ def VoiceActivation(activate,deactivate):
                         audio = recognizer.listen(source)
 
                     try:
-                        # speech_text = recognizer.recognize_google(audio)
+                        
                         speech_text=WhisperModel(audio)
                         user_messages.append(speech_text)
                         socketio.emit("user_message",{'message':speech_text})
-                        openai.api_key = "sk-proj-8hEDD0MBrecoxmRA5cyWT3BlbkFJhn1v2mVy59OkNOC6n9EU"
+                        
                         response = openai.chat.completions.create(
                             model="gpt-4o",
                             messages=[
