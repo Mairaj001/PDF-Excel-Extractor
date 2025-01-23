@@ -37,16 +37,6 @@ The **PDF and Excel Extractor** is a powerful tool designed to process and extra
    ```
 3. Access the web application at `http://localhost:5000` to upload files, extract, and summarize key information interactively..
 
-## Project Structure
-```
-├── input/               # Folder for input PDF and Excel files
-├── output/              # Folder for extracted and summarized data
-├── main.py              # Main script to run the extractor
-├── requirements.txt     # List of dependencies
-├── README.md            # Project documentation
-```
-
-
 
 ## Contributions
 Contributions are welcome! Feel free to fork the repository, create a new branch, and submit a pull request.
